@@ -1,0 +1,68 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+\usetheme{Madrid}
+\usecolortheme{dolphin}
+\usepackage{amsmath,amssymb,booktabs}
+\setbeamertemplate{navigation symbols}{}
+\title{A Reproducible Computational Study of Intersections of Hassett Divisors}
+\subtitle{Yang--Yu Algorithm 7.6 and the example $\mathcal C_8\cap\mathcal C_{14}$}
+\author{Jorge Guzman}
+\date{Caltech Mathathon 2026}
+\begin{document}
+\begin{frame}\titlepage\end{frame}
+\begin{frame}{The problem}
+\begin{itemize}\item A smooth cubic fourfold $X$ has a lattice $A(X)$ of algebraic classes.\item A Hassett divisor $\mathcal C_d$ records a primitive rank-two sublattice containing $h^2$, with discriminant $d$.\item Question: how do we enumerate components of $\mathcal C_{d_1}\cap\mathcal C_{d_2}$?\end{itemize}
+\vspace{0.5em}\alert{Scope:} reproduce and explain published results computationally; no claim of a new classification.
+\end{frame}
+\begin{frame}{Why a rank-three lattice?}
+Two rank-two lattices share the class $h^2$:
+\[K_8=\begin{pmatrix}3&1\\1&3\end{pmatrix},\qquad K_{14}=\begin{pmatrix}3&1\\1&5\end{pmatrix}.\]
+Their span has basis $(h^2,u,v)$ and Gram matrix
+\[G_\tau=\begin{pmatrix}3&1&1\\1&3&\tau\\1&\tau&5\end{pmatrix},\qquad \tau=(u,v)\in\mathbb Z.\]
+Only one inner product is unknown.
+\end{frame}
+\begin{frame}{First two filters: positivity and roots}
+\[\det G_\tau=37+2\tau-3\tau^2.\]
+Sylvester's criterion gives
+\[T_1=\{-3,-2,-1,0,1,2,3\}.\]
+\begin{itemize}\item At $\tau=3$, $u-v$ has norm $2$.\item At $\tau=-3$, $u+v$ has norm $2$.\item A sum-of-squares bound excludes roots for $|\tau|\le2$.\end{itemize}
+\[\boxed{T_2=\{-2,-1,0,1,2\}}\]
+\end{frame}
+\begin{frame}{The nontrivial part: overlattices}
+The span $M_\tau=\langle h^2,u,v\rangle$ may not be saturated.
+\begin{enumerate}\item Enumerate isotropic subgroups of $M_\tau^\vee/M_\tau$.\item Construct corresponding integral overlattices.\item Test primitivity of both rank-two labellings, evenness of $(h^2)^\perp$, and absence of roots.\end{enumerate}
+\alert{Program output:} for $(8,14)$, two nontrivial subgroups at $\tau=-1$ and three at $\tau=1$; none accepted. Explicit rejection certificates remain a next step.
+\end{frame}
+\begin{frame}{Computed output for $\mathcal C_8\cap\mathcal C_{14}$}
+\centering
+\begin{tabular}{rr}\toprule $\tau$&$\det G_\tau$\\\midrule $-2$&21\\$-1$&32\\$0$&37\\$1$&36\\$2$&29\\\bottomrule\end{tabular}
+\vspace{1em}
+\begin{block}{Comparison with established literature}
+Five irreducible components, discriminants $\{21,29,32,36,37\}$, were already classified by Auel--Bernardara--Bolognesi--V\'arilly-Alvarado (2014, Theorem 4).
+\end{block}
+\end{frame}
+\begin{frame}{Regression tests and what they establish}
+\centering
+\begin{tabular}{lcc}\toprule Intersection & Code & Literature\\\midrule
+$\mathcal C_{20}\cap\mathcal C_{38}$ &17&17\\
+$\mathcal C_{20}\cap\mathcal C_{12}$ &6&6\\
+$\mathcal C_8\cap\mathcal C_{14}$ &5&5\\\bottomrule\end{tabular}
+\vspace{1em}
+\begin{itemize}\item Matches are useful regression tests.\item They do \emph{not} constitute formal verification of the code.\item Geometric interpretation relies on Yang--Yu's theorems.\end{itemize}
+\end{frame}
+\begin{frame}{Connecting the two parameter conventions}
+Auel et al. use $T=h^2+v$ rather than $v$.
+\[\begin{pmatrix}3&1&1\\1&3&\tau\\1&\tau&5\end{pmatrix}
+\quad\longrightarrow\quad
+\begin{pmatrix}3&1&4\\1&3&\tau+1\\4&\tau+1&10\end{pmatrix}.\]
+Thus $\tau_{\mathrm{ABBVA}}=\tau_{\mathrm{YY}}+1$.
+\vspace{0.7em}
+\alert{The same five lattices appear in different integral bases.}
+\end{frame}
+\begin{frame}{AI use, verification, and limitations}
+\begin{itemize}\item \textbf{Open Math OS + DeepSeek V4.1 Flash:} generated all Python code and the initial research report.\item \textbf{Participant:} directed inquiry, studied mathematical framework, interpreted and compared results.\item \textbf{ChatGPT:} interactive explanations, review, and preparation of submission.\item \textbf{Verified here:} determinant, positivity, endpoint roots, rootlessness bound, basis change, and script execution.\item \textbf{Not independently certified:} all overlattice exclusions; general correctness of the program.\end{itemize}
+\end{frame}
+\begin{frame}{Conclusions and next steps}
+\begin{enumerate}\item A one-parameter rank-three Gram matrix makes the intersection computable.\item The AI-generated implementation reproduces three published component counts.\item The $\mathcal C_8\cap\mathcal C_{14}$ calculation agrees with the established five-component classification.\item Next: explicit certificates for rejected overlattices and certified bounds in the code.\end{enumerate}
+\vspace{0.7em}\footnotesize Sources: Hassett (2000); Yang--Yu, arXiv:2103.09132, Algorithm 7.6; Auel et al., \emph{Algebraic Geometry} 1 (2014), Theorem 4.
+\end{frame}
+\end{document}

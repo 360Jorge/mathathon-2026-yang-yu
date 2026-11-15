@@ -1,0 +1,57 @@
+=== C_20 ∩ C_38   case (i), n1=3, n2=6
+ (2) T1 = [-8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+     tau=  9 disc=  28: M_tau has a root -> discarded
+ (3) T2 = [(-8, 45), (-7, 92), (-6, 133), (-5, 168), (-4, 197), (-3, 220), (-2, 237), (-1, 248), (0, 253), (1, 252), (2, 245), (3, 232), (4, 213), (5, 188), (6, 157), (7, 120), (8, 77)]
+ (4) tau= -8  disc(M_tau)=  45  1 nontrivial overlattice(s), admitted: none
+ (4) tau= -7  disc(M_tau)=  92  1 nontrivial overlattice(s), admitted: none
+ (4) tau= -6  disc(M_tau)= 133  0 nontrivial overlattice(s), admitted: none
+ (4) tau= -5  disc(M_tau)= 168  1 nontrivial overlattice(s), admitted: none
+ (4) tau= -4  disc(M_tau)= 197  0 nontrivial overlattice(s), admitted: none
+ (4) tau= -3  disc(M_tau)= 220  1 nontrivial overlattice(s), admitted: none
+ (4) tau= -2  disc(M_tau)= 237  0 nontrivial overlattice(s), admitted: none
+ (4) tau= -1  disc(M_tau)= 248  1 nontrivial overlattice(s), admitted: none
+ (4) tau=  0  disc(M_tau)= 253  0 nontrivial overlattice(s), admitted: none
+ (4) tau=  1  disc(M_tau)= 252  3 nontrivial overlattice(s), admitted: none
+ (4) tau=  2  disc(M_tau)= 245  1 nontrivial overlattice(s), admitted: none
+ (4) tau=  3  disc(M_tau)= 232  1 nontrivial overlattice(s), admitted: none
+ (4) tau=  4  disc(M_tau)= 213  0 nontrivial overlattice(s), admitted: none
+ (4) tau=  5  disc(M_tau)= 188  1 nontrivial overlattice(s), admitted: none
+ (4) tau=  6  disc(M_tau)= 157  0 nontrivial overlattice(s), admitted: none
+ (4) tau=  7  disc(M_tau)= 120  1 nontrivial overlattice(s), admitted: none
+ (4) tau=  8  disc(M_tau)=  77  0 nontrivial overlattice(s), admitted: none
+ (5) 17 component(s), discriminants [45, 77, 92, 120, 133, 157, 168, 188, 197, 213, 220, 232, 237, 245, 248, 252, 253]
+    regression: |components| = 17, paper says 17, OK
+
+=== C_20 ∩ C_12   case (ii), n1=3, n2=2
+ (2) T1 = [0, 1, 2, 3, 4, 5]
+     tau=  5 disc=   5: M_tau has a root -> discarded
+ (3) T2 = [(0, 80), (1, 77), (2, 68), (3, 53), (4, 32)]
+ (4) tau=  0  disc(M_tau)=  80  6 nontrivial overlattice(s), admitted: [20]
+ (4) tau=  1  disc(M_tau)=  77  0 nontrivial overlattice(s), admitted: none
+ (4) tau=  2  disc(M_tau)=  68  3 nontrivial overlattice(s), admitted: none
+ (4) tau=  3  disc(M_tau)=  53  0 nontrivial overlattice(s), admitted: none
+ (4) tau=  4  disc(M_tau)=  32  4 nontrivial overlattice(s), admitted: none
+ (5) 6 component(s), discriminants [20, 32, 53, 68, 77, 80]
+    regression: |components| = 6, paper says 6, OK
+
+=== C_8 ∩ C_14   case (i), n1=1, n2=2
+ (2) T1 = [-3, -2, -1, 0, 1, 2, 3]
+     tau= -3 disc=   4: M_tau has a root -> discarded
+     tau=  3 disc=  16: M_tau has a root -> discarded
+ (3) T2 = [(-2, 21), (-1, 32), (0, 37), (1, 36), (2, 29)]
+ (4) tau= -2  disc(M_tau)=  21  0 nontrivial overlattice(s), admitted: none
+ (4) tau= -1  disc(M_tau)=  32  2 nontrivial overlattice(s), admitted: none
+ (4) tau=  0  disc(M_tau)=  37  0 nontrivial overlattice(s), admitted: none
+ (4) tau=  1  disc(M_tau)=  36  3 nontrivial overlattice(s), admitted: none
+ (4) tau=  2  disc(M_tau)=  29  0 nontrivial overlattice(s), admitted: none
+ (5) 5 component(s), discriminants [21, 29, 32, 36, 37]
+
+Computed answer for C_8 ∩ C_14:
+    tau=-2   M_tau = [[3,1,1],[1,3,-2],[1,-2,5]]   disc = 21
+    tau=-1   M_tau = [[3,1,1],[1,3,-1],[1,-1,5]]   disc = 32
+    tau= 0   M_tau = [[3,1,1],[1,3,0],[1,0,5]]   disc = 37
+    tau= 1   M_tau = [[3,1,1],[1,3,1],[1,1,5]]   disc = 36
+    tau= 2   M_tau = [[3,1,1],[1,3,2],[1,2,5]]   disc = 29
+    -> 5 irreducible components
+
+regression checks: PASS

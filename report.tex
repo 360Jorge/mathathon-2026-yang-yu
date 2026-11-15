@@ -1,0 +1,81 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,booktabs,hyperref,array}
+\hypersetup{colorlinks=true,urlcolor=blue,linkcolor=blue}
+\title{A Reproducible Computational Study of Intersections of Hassett Divisors Using Yang--Yu's Algorithm 7.6}
+\author{Jorge Guzman\\Independent participant, Caltech Mathathon 2026\\Track: Geometry}
+\date{November 15, 2026}
+\begin{document}\maketitle
+\begin{abstract}
+We study a computational implementation of Yang and Yu's Algorithm 7.6 for enumerating rank-three lattice-polarized loci in intersections of Hassett divisors of special cubic fourfolds. The implementation, generated using Open Math OS with DeepSeek V4.1 Flash, reproduces the published counts of 17 components for $\mathcal C_{20}\cap\mathcal C_{38}$ and six for $\mathcal C_{20}\cap\mathcal C_{12}$. Applied to $\mathcal C_8\cap\mathcal C_{14}$, it returns five lattices of discriminants $21,29,32,36,37$, agreeing with the classification of Auel, Bernardara, Bolognesi, and V\'arilly-Alvarado. We explain the one-parameter Gram-matrix construction, the positivity and rootlessness filters, and the computational treatment of overlattices. This is a reproducibility and exposition study, not a new classification of the intersection. We distinguish code outputs, elementary calculations, and results imported from the literature, and identify remaining verification tasks.
+\end{abstract}
+\section{Problem and mathematical setting}
+For a smooth cubic fourfold $X$, let $A(X)=H^4(X,\mathbb Z)\cap H^{2,2}(X)$ be its lattice of integral algebraic classes, with the intersection pairing. The square of the hyperplane class, $h^2$, has self-pairing $3$. A Hassett divisor $\mathcal C_d$ parametrizes special cubic fourfolds with a primitive rank-two sublattice containing $h^2$ and having discriminant $d$; see \cite{Hassett,YangYu}. Our question is how lattice data can enumerate the irreducible components of $\mathcal C_{d_1}\cap\mathcal C_{d_2}$.
+
+For $d_1=8$ and $d_2=14$, choose rank-two Gram matrices
+\[
+K_8=\begin{pmatrix}3&1\\1&3\end{pmatrix},\qquad K_{14}=\begin{pmatrix}3&1\\1&5\end{pmatrix}.
+\]
+The two sublattices share $h^2$. Their rank-three span, with basis $(h^2,u,v)$, is represented by
+\begin{equation}\label{eq:gram}
+G_\tau=\begin{pmatrix}3&1&1\\1&3&\tau\\1&\tau&5\end{pmatrix},\qquad \tau=(u,v)\in\mathbb Z.
+\end{equation}
+The generated span need not be saturated in $A(X)$; admissible integral overlattices therefore require a separate check.
+
+\section{Algorithmic approach}
+Yang--Yu's Algorithm 7.6 \cite[Algorithm 7.6]{YangYu} starts from Gram matrices with one integer parameter $\tau$. It filters for positive definiteness, removes lattices containing a vector of squared norm $2$ (a root), considers admissible integral overlattices, and removes isometric duplicates. The geometric interpretation of surviving lattices as irreducible components depends on the cited results of Yang--Yu, not merely on determinant calculations.
+
+For \eqref{eq:gram}, direct expansion gives
+\begin{equation}\label{eq:det}
+\det G_\tau=37+2\tau-3\tau^2.
+\end{equation}
+The first two leading principal minors are $3$ and $8$, so Sylvester's criterion makes positive definiteness equivalent to $\det G_\tau>0$. Equivalently,
+\[
+\left|\tau-\tfrac13\right|<\frac{\sqrt{112}}3,
+\]
+which yields $T_1=\{-3,-2,-1,0,1,2,3\}$. The endpoint values are excluded by explicit roots: for $\tau=3$, $u-v$ has norm $3+5-2(3)=2$; for $\tau=-3$, $u+v$ has norm $3+5+2(-3)=2$.
+
+For the five remaining values, rootlessness can also be checked by the identity, for $w=xh^2+yu+zv$,
+\[
+(w,w)=x^2+(x+y)^2+(x+z)^2+2y^2+4z^2+2\tau yz.
+\]
+For $|\tau|\le2$, the last three terms satisfy
+\[
+2y^2+4z^2+2\tau yz\ge 2(|y|-|z|)^2+2z^2.
+\]
+If $(y,z)\ne(0,0)$, the right side is at least $2$; equality at $2$ for the entire norm is impossible because it would force $x=x+y=x+z=0$. If $y=z=0$, the norm is $3x^2$. Thus no nonzero vector has norm $2$ for $|\tau|\le2$. Consequently $T_2=\{-2,-1,0,1,2\}$.
+
+\section{Computational experiments and results}
+The accompanying Python implementation uses \texttt{sympy} and \texttt{numpy}. It enumerates candidate values, searches for small-norm vectors, constructs isotropic subgroups of discriminant groups, builds associated overlattices, and checks primitivity, parity, and roots. The command \texttt{python algo76.py --check} was executed on November 15, 2026 for this report. It returned the following counts:
+\begin{center}\begin{tabular}{lll}\toprule
+Intersection & Program output & Published comparison\\\midrule
+$\mathcal C_{20}\cap\mathcal C_{38}$ & 17 & 17, \cite[Theorem 7.9]{YangYu}\\
+$\mathcal C_{20}\cap\mathcal C_{12}$ & 6 & 6, \cite[Theorem 7.11]{YangYu}\\
+$\mathcal C_8\cap\mathcal C_{14}$ & 5 & 5, \cite[Theorem 4]{ABBVA}\\\bottomrule\end{tabular}\end{center}
+For the final case, the program printed:
+\begin{center}\begin{tabular}{rrl}\toprule
+$\tau$ & $\det G_\tau$ & Nontrivial isotropic subgroups examined\\\midrule
+$-2$&21&0\\$-1$&32&2\\$0$&37&0\\$1$&36&3\\$2$&29&0\\\bottomrule\end{tabular}\end{center}
+It reported no admissible nontrivial overlattices in this case. The resulting five discriminants are distinct, so the five displayed lattices are pairwise non-isometric. These are \emph{outputs of the implementation}; the overlattice exclusions have not all been independently certified by explicit witness vectors in this report. The five-component classification itself is already established by \cite{ABBVA}.
+
+\section{Comparison of conventions}
+The earlier classification \cite{ABBVA} uses the quartic-scroll basis $T=h^2+v$ instead of $v$. In the basis $(h^2,u,T)$, the Gram matrix becomes
+\[
+\begin{pmatrix}3&1&4\\1&3&\tau+1\\4&\tau+1&10\end{pmatrix}.
+\]
+Thus its parameter is $\tau_{\mathrm{ABBVA}}=\tau_{\mathrm{YY}}+1$. This integral basis change accounts for the different parameter ranges; it does not alter the underlying lattice or its discriminant.
+
+\section{Verification status, limitations, and next steps}
+The determinant formula, the positivity range, the two endpoint roots, the displayed rootlessness bound, and the basis change above are explicit calculations in this report. The three numerical counts are outputs of an AI-generated Python program and match cited literature. These matching counts are useful regression tests, but are not a formal verification of the implementation. In particular, the current program uses a finite search range $-400\le\tau\le400$ and numerical eigenvalue bounds for short-vector enumeration; a general-purpose certified implementation should derive exact parameter bounds and rigorous search certificates. Its isometry filtering uses discriminants, which distinguish the displayed $\mathcal C_8\cap\mathcal C_{14}$ lattices but do not generally decide isometry. The full mathematical justification for interpreting the list as geometric irreducible components is taken from \cite{YangYu,ABBVA}.
+
+A useful next step is to export an explicit certificate for each rejected overlattice, including the subgroup, its Gram matrix, and a witness to a failed condition. Additional tests on further published examples would strengthen confidence in the implementation.
+
+\section{Work during the event and AI assistance}
+During the Mathathon, the participant investigated Yang--Yu's lattice method, studied its mathematical prerequisites and interpretation, directed the computational inquiry, and compared the generated outputs with existing results. The Python implementation and the initial accompanying research report were generated entirely by \emph{Open Math OS}, using \emph{DeepSeek V4.1 Flash} as its selected language model. ChatGPT (OpenAI) was used for interactive mathematical explanations, further review, and generation/editing of the submission report and presentation slides. The participant does not claim to have personally written the implementation or to have independently proved the published classification. The verification status of each result is described above.
+
+\begin{thebibliography}{9}
+\bibitem{Hassett} B. Hassett, \emph{Special cubic fourfolds}, Compositio Mathematica \textbf{120} (2000), 1--23.
+\bibitem{YangYu} S. Yang and X. Yu, \emph{On lattice polarizable cubic fourfolds}, arXiv:2103.09132 (2021), especially \S7.
+\bibitem{ABBVA} A. Auel, M. Bernardara, M. Bolognesi, and A. V\'arilly-Alvarado, \emph{Cubic fourfolds containing a plane and a quintic del Pezzo surface}, Algebraic Geometry \textbf{1} (2014), 181--193; arXiv:1205.0237.
+\end{thebibliography}
+\end{document}
